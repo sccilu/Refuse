@@ -47,7 +47,7 @@
         <activity android:name=".RecyclableActivity" />
         <activity
             android:name=".LoginActivity"
-            android:label="" >
+            android:label="Trash Separation" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
