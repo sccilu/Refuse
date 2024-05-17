@@ -122,145 +122,35 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#A3DD53" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_weight="1"
+        android:paddingBottom="5dp"
         android:orientation="horizontal">
+
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:padding="40dp">
+            android:orientation="vertical">
             <ImageButton
-                android:id="@+id/test_button"
+                android:id="@+id/test_all_button"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="5dp"
                 android:src="@drawable/test"
-                android:background="#00000000"
-                android:layout_gravity="center"
-                android:padding="5dp"
-                android:scaleType="fitCenter" />
+                android:background="#00000000"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="模拟考试"
+                android:text="考试"
                 android:textSize="15sp" />
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <ImageButton
-                        android:id="@+id/exercise_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:scaleType="fitCenter"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_margin="5dp"
-                        android:src="@drawable/exercise"
-                        android:background="#00000000"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="练习"
-                        android:textSize="15sp" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <ImageButton
-                        android:id="@+id/errorProne_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:scaleType="fitCenter"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_margin="5dp"
-                        android:src="@drawable/errorprone"
-                        android:background="#00000000"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="易错"
-                        android:textSize="15sp"
-                        android:background="#00000000"/>
-                </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <ImageButton
-                        android:id="@+id/common_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:scaleType="fitCenter"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_margin="5dp"
-                        android:src="@drawable/common"
-                        android:background="#00000000"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="常见"
-                        android:textSize="15sp" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <ImageButton
-                        android:id="@+id/special_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:scaleType="fitCenter"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_margin="5dp"
-                        android:src="@drawable/special"
-                        android:background="#00000000"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="专项"
-                        android:textSize="15sp" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -303,9 +193,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="#00000000"
+                android:contentDescription="TODO"
                 android:padding="20dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/photograph" />
+                android:src="@drawable/photograph"
+                android:onClick="openCamera" />
+
 
         </LinearLayout>
 

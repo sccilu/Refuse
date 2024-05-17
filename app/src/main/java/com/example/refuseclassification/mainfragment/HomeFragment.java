@@ -3,7 +3,9 @@ package com.example.refuseclassification.mainfragment;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -12,9 +14,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.baidu.speech.EventListener;
@@ -33,11 +38,17 @@ import com.example.refuseclassification.RecyclableActivity;
 import com.example.refuseclassification.SearchActivity;
 import com.example.refuseclassification.SpecialActivity;
 import com.example.refuseclassification.TestActivity;
+import com.example.refuseclassification.TestAllActivity;
 import com.example.refuseclassification.WetActivity;
 import com.example.refuseclassification.setTitleCenter;
 import com.google.gson.Gson;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 
 public class HomeFragment extends Fragment implements EventListener{
 
@@ -46,11 +57,7 @@ public class HomeFragment extends Fragment implements EventListener{
     private ImageButton harmful_button;
     private ImageButton wet_button;
     private ImageButton dry_button;
-    private ImageButton test_button;
-    private ImageButton exercise_button;
-    private ImageButton errorProne_button;
-    private ImageButton common_button;
-    private ImageButton special_button;
+    private ImageButton testAll_Button;
     private EditText search;
     private ImageButton recording_button;
     private EventManager asr;//语音识别核心库
@@ -65,6 +72,14 @@ public class HomeFragment extends Fragment implements EventListener{
         new KnowledgeDatabase().setKnowledgeDatabase();// 初始化数据库
         // 绑定按钮以及事件
         recyclable_button = (ImageButton) view.findViewById(R.id.recyclable_button);
+        ImageButton testAllButton = view.findViewById(R.id.test_all_button);
+        testAllButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), TestAllActivity.class);
+                startActivity(intent);
+            }
+        });
         recyclable_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,46 +111,17 @@ public class HomeFragment extends Fragment implements EventListener{
                 startActivity(intent);
             }
         });
-        test_button = (ImageButton) view.findViewById(R.id.test_button);
-        test_button.setOnClickListener(new View.OnClickListener() {
+
+        testAll_Button = (ImageButton) view.findViewById(R.id.test_all_button);
+        testAll_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), TestActivity.class);
+                // Start TestAllActivity when test_all_button is clicked
+                Intent intent = new Intent(getActivity(), TestAllActivity.class);
                 startActivity(intent);
             }
         });
-        exercise_button = (ImageButton) view.findViewById(R.id.exercise_button);
-        exercise_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ExerciseActivity.class);
-                startActivity(intent);
-            }
-        });
-        errorProne_button = (ImageButton) view.findViewById(R.id.errorProne_button);
-        errorProne_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ErrorProneActivity.class);
-                startActivity(intent);
-            }
-        });
-        common_button = (ImageButton) view.findViewById(R.id.common_button);
-        common_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), CommonActivity.class);
-                startActivity(intent);
-            }
-        });
-        special_button = (ImageButton) view.findViewById(R.id.special_button);
-        special_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), SpecialActivity.class);
-                startActivity(intent);
-            }
-        });
+
         search = (EditText) view.findViewById(R.id.searchHome);
         search.setFocusable(false);//失去焦点
         search.setOnClickListener(new View.OnClickListener() {
@@ -146,31 +132,15 @@ public class HomeFragment extends Fragment implements EventListener{
             }
         });
 
+
         // 初始化权限
         initPermission();
         recording_button = (ImageButton) view.findViewById(R.id.recording_button);
-        recording_button.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int action = event.getAction();
-                if (action == MotionEvent.ACTION_DOWN) {
-                    // 按下 处理相关逻辑
-                    asr.send(SpeechConstant.ASR_START, "{}", null, 0, 0);
-                } else if (action == MotionEvent.ACTION_UP) {
-                    // 松开 处理相关逻辑
-                    asr.send(SpeechConstant.ASR_STOP, "{}", null, 0, 0);
-                }
-                return false;
-            }
-        });
 
-        //初始化EventManager对象
-        asr = EventManagerFactory.create(getContext(), "asr");
-        //注册自己的输出事件类
-        asr.registerListener(this); // EventListener 中 onEvent方法
 
         return view;
     }
+
 
     private void initPermission() {
         String permissions[] = {Manifest.permission.RECORD_AUDIO,
@@ -192,38 +162,12 @@ public class HomeFragment extends Fragment implements EventListener{
         }
     }
 
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         // 此处为android 6.0以上动态授权的回调，用户自行实现。
     }
 
-    @Override
-    public void onEvent(String name, String params, byte[] data, int offset, int length) {
-        if (name.equals(SpeechConstant.CALLBACK_EVENT_ASR_PARTIAL)) {
-            // 识别相关的结果都在这里
-            if (params == null || params.isEmpty()) {
-                return;
-            }
-            if (params.contains("\"final_result\"")) {
-                // 一句话的最终识别结果
-                Gson gson = new Gson();
-                ASRresponse asRresponse = gson.fromJson(params, ASRresponse.class);//数据解析转实体bean
-                if(asRresponse.getBest_result().contains("，")){
-                    // 包含逗号  则将逗号替换为空格
-                    // 替换为空格之后，通过trim去掉字符串的首尾空格
-                    setResult(asRresponse.getBest_result().replace('，',' ').trim());
-                }else {// 不包含
-                    setResult(asRresponse.getBest_result().trim());
-                }
-                Intent intent = new Intent(getActivity(), SearchActivity.class);
-                if (result.contains("。")) {
-                    setResult(result.replaceAll("。", ""));
-                }
-                intent.putExtra("record", result);
-                startActivity(intent);
-            }
-        }
-    }
 
     @Override
     public void onDestroy() {
@@ -237,5 +181,44 @@ public class HomeFragment extends Fragment implements EventListener{
 
     public void setResult(String result) {
         this.result = result;
+    }
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private String currentPhotoPath;
+
+    public void openCamera(View view) {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(getContext(),
+                        "com.example.refuseclassification.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
+        }
+    }
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getContext().getExternalFilesDir(null);
+        File image = File.createTempFile(
+                imageFileName,
+                ".jpg",
+                storageDir
+        );
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+
+    @Override
+    public void onEvent(String s, String s1, byte[] bytes, int i, int i1) {
+
     }
 }
