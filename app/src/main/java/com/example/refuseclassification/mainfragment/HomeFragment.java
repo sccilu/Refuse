@@ -37,6 +37,7 @@ public class HomeFragment extends Fragment implements EventListener{
     private ImageButton Knowledge_Button;
     private EditText search;
     private ImageButton recording_button;
+
     private EventManager asr;//语音识别核心库
     private String result;
 

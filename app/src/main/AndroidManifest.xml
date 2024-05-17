@@ -42,14 +42,15 @@
         <activity android:name=".HarmfulActivity" />
         <activity android:name=".RecyclableActivity" />
         <activity android:name=".SearchActivity" />
-        <activity
-            android:name=".LoginActivity"
-            android:label="Trash Separation">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".LoginActivity" />
+<!--        <activity-->
+<!--            android:name=".LoginActivity"-->
+<!--            android:label="Trash Separation">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
 
         <activity android:name=".StartActivity">
             <intent-filter>
