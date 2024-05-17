@@ -33,11 +33,8 @@ import java.util.ArrayList;
 public class HomeFragment extends Fragment implements EventListener{
 
     private Toolbar toolbar;
-    private ImageButton recyclable_button;
-    private ImageButton harmful_button;
-    private ImageButton wet_button;
-    private ImageButton dry_button;
     private ImageButton testAll_Button;
+    private ImageButton Knowledge_Button;
     private EditText search;
     private ImageButton recording_button;
     private EventManager asr;//语音识别核心库
@@ -51,43 +48,13 @@ public class HomeFragment extends Fragment implements EventListener{
         new setTitleCenter().setTitleCenter(toolbar);// 初始化ToolBar
         new KnowledgeDatabase().setKnowledgeDatabase();// 初始化数据库
         // 绑定按钮以及事件
-        recyclable_button = (ImageButton) view.findViewById(R.id.recyclable_button);
-        ImageButton testAllButton = view.findViewById(R.id.test_all_button);
-        testAllButton.setOnClickListener(new View.OnClickListener() {
+
+        Knowledge_Button = (ImageButton) view.findViewById(R.id.knowledge_button);
+        Knowledge_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), TestAllActivity.class);
-                startActivity(intent);
-            }
-        });
-        recyclable_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), RecyclableActivity.class);
-                startActivity(intent);
-            }
-        });
-        harmful_button = (ImageButton) view.findViewById(R.id.harmful_button);
-        harmful_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), HarmfulActivity.class);
-                startActivity(intent);
-            }
-        });
-        wet_button = (ImageButton) view.findViewById(R.id.wet_button);
-        wet_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), WetActivity.class);
-                startActivity(intent);
-            }
-        });
-        dry_button = (ImageButton) view.findViewById(R.id.dry_button);
-        dry_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), DryActivity.class);
+                // Start TestAllActivity when test_all_button is clicked
+                Intent intent = new Intent(getActivity(), KnowledgeActivity.class);
                 startActivity(intent);
             }
         });

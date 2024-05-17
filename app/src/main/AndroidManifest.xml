@@ -31,6 +31,7 @@
         <activity android:name=".AboutActivity" />
         <activity android:name=".mainfragment.TestAllActivity"/>
         <activity android:name=".TestActivity"/>
+        <activity android:name=".mainfragment.KnowledgeActivity" />
         <activity android:name=".SpecialActivity" />
         <activity android:name=".ErrorProneActivity" />
         <activity android:name=".CommonActivity" />
