@@ -1,17 +1,11 @@
 
-
-
-
-
 //此页面已注释
-
-
-
 
 package com.example.refuseclassification;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -49,6 +43,7 @@ public class StartActivity extends BaseActivity implements View.OnClickListener{
         }
     };
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -25,14 +25,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data
-            android:name="com.google.android.actions"
-            android:resource="@xml/file_paths" />
 
         <activity android:name=".NotificationActivity" />
         <activity android:name=".AgreementActivity" />
         <activity android:name=".AboutActivity" />
-        <activity android:name=".TestAllActivity"/>
+        <activity android:name=".mainfragment.TestAllActivity"/>
         <activity android:name=".TestActivity"/>
         <activity android:name=".SpecialActivity" />
         <activity android:name=".ErrorProneActivity" />

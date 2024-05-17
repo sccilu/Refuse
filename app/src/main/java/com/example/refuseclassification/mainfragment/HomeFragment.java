@@ -3,51 +3,31 @@ package com.example.refuseclassification.mainfragment;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.baidu.speech.EventListener;
-import com.baidu.speech.EventManagerFactory;
 import com.baidu.speech.EventManager;
-import com.baidu.speech.asr.SpeechConstant;
-import com.example.refuseclassification.ASRresponse;
-import com.example.refuseclassification.CommonActivity;
 import com.example.refuseclassification.DryActivity;
-import com.example.refuseclassification.ErrorProneActivity;
-import com.example.refuseclassification.ExerciseActivity;
 import com.example.refuseclassification.HarmfulActivity;
 import com.example.refuseclassification.KnowledgeDatabase;
 import com.example.refuseclassification.R;
 import com.example.refuseclassification.RecyclableActivity;
 import com.example.refuseclassification.SearchActivity;
-import com.example.refuseclassification.SpecialActivity;
-import com.example.refuseclassification.TestActivity;
-import com.example.refuseclassification.TestAllActivity;
 import com.example.refuseclassification.WetActivity;
 import com.example.refuseclassification.setTitleCenter;
-import com.google.gson.Gson;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+
 
 
 public class HomeFragment extends Fragment implements EventListener{
@@ -132,15 +112,8 @@ public class HomeFragment extends Fragment implements EventListener{
             }
         });
 
-
-        // 初始化权限
-        initPermission();
-        recording_button = (ImageButton) view.findViewById(R.id.recording_button);
-
-
         return view;
     }
-
 
     private void initPermission() {
         String permissions[] = {Manifest.permission.RECORD_AUDIO,
@@ -161,61 +134,6 @@ public class HomeFragment extends Fragment implements EventListener{
             ActivityCompat.requestPermissions(getActivity(), toApplyList.toArray(tmpList), 123);
         }
     }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        // 此处为android 6.0以上动态授权的回调，用户自行实现。
-    }
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        //发送取消事件
-        asr.send(SpeechConstant.ASR_CANCEL, "{}", null, 0, 0);
-        //退出事件管理器
-        // 必须与registerListener成对出现，否则可能造成内存泄露
-        asr.unregisterListener(this);
-    }
-
-    public void setResult(String result) {
-        this.result = result;
-    }
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    private String currentPhotoPath;
-
-    public void openCamera(View view) {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null) {
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(getContext(),
-                        "com.example.refuseclassification.fileprovider",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-            }
-        }
-    }
-    private File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getContext().getExternalFilesDir(null);
-        File image = File.createTempFile(
-                imageFileName,
-                ".jpg",
-                storageDir
-        );
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
-
 
     @Override
     public void onEvent(String s, String s1, byte[] bytes, int i, int i1) {
