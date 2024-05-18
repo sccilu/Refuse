@@ -1,5 +1,4 @@
 package com.example.refuseclassification.mainfragment;
-
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -22,6 +21,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
@@ -30,6 +32,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.refuseclassification.AboutActivity;
 import com.example.refuseclassification.AgreementActivity;
+import com.example.refuseclassification.ChangePasswordActivity;
 import com.example.refuseclassification.NotificationActivity;
 import com.example.refuseclassification.R;
 import com.example.refuseclassification.setTitleCenter;
@@ -49,6 +52,7 @@ public class SettingFragment extends Fragment {
     private TextView agreement;
     private TextView version;
     private TextView logout;
+    private TextView changePassword;
     private Bitmap head;// 头像Bitmap
     private static String path = "/sdcard/myHead/";// sd路径
 
@@ -60,7 +64,7 @@ public class SettingFragment extends Fragment {
         toolbar.setTitle("设置");
         new setTitleCenter().setTitleCenter(toolbar);
 
-        //API24以上系统分享支持file:///开头
+        // API24以上系统分享支持file:///开头
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();
@@ -72,19 +76,12 @@ public class SettingFragment extends Fragment {
             Drawable drawable = new BitmapDrawable(bt);// 转换成drawable
             imageButton.setImageDrawable(drawable);
         } else {
-            /**
-             * 如果SD里面没有则需要从服务器取头像，取回来的头像再保存在SD中
-             *
-             */
+            // 如果SD里面没有则需要从服务器取头像，取回来的头像再保存在SD中
         }
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.person_photo:// 更换头像
-                        showTypeDialog();
-                        break;
-                }
+                showTypeDialog();
             }
         });
 
@@ -97,8 +94,8 @@ public class SettingFragment extends Fragment {
                         0, new Intent[]{intent}, 0);
                 NotificationManager manager = (NotificationManager)
                         getContext().getSystemService(NOTIFICATION_SERVICE);
-                //需添加的代码
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                // 需添加的代码
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     String channelId = "default";
                     String channelName = "默认通知";
                     manager.createNotificationChannel(new NotificationChannel
@@ -162,11 +159,27 @@ public class SettingFragment extends Fragment {
                 getActivity().sendBroadcast(intent);
             }
         });
+
+        changePassword = view.findViewById(R.id.text_change_password);
+        changePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 获取当前用户账号信息
+                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
+                String account = pref.getString("account", "");
+
+                // 启动 ChangePasswordActivity 并传递账号信息
+                Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
+                intent.putExtra("account", account);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 
     private void showTypeDialog() {
-        //显示对话框
+        // 显示对话框
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final AlertDialog dialog = builder.create();
         View view = View.inflate(getActivity(), R.layout.dialog_select_photo, null);
@@ -176,7 +189,7 @@ public class SettingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent1 = new Intent(Intent.ACTION_PICK, null);
-                //打开文件
+                // 打开文件
                 intent1.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
                 startActivityForResult(intent1, 1);
                 dialog.dismiss();
@@ -228,6 +241,7 @@ public class SettingFragment extends Fragment {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
     /**
      * 调用系统的裁剪功能
      *

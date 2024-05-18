@@ -70,12 +70,14 @@ public class LoginActivity extends BaseActivity {
                                 editor.putBoolean("remember_password", true);
                                 editor.putString("account", account);
                                 editor.putString("password", password);
-                            }
-                            else {
+                            } else {
                                 editor.clear();
                             }
                             editor.apply();
+
+                            // 将当前用户账号传递到 MainActivity
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            intent.putExtra("account", account);
                             startActivity(intent);
                             finish();
                             flag = 0;

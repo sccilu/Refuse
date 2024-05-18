@@ -4,4 +4,11 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+        <string name="name_hint">Name</string>
+        <string name="address_hint">Address</string>
+        <string name="phone_hint">Phone</string>
+        <string name="date_hint">Select Date</string>
+        <string name="time_hint">Select Time</string>
+        <string name="submit_button_label">Submit Reservation</string>
+
 </resources>
