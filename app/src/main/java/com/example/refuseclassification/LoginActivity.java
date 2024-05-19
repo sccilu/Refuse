@@ -10,8 +10,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -27,7 +25,6 @@ public class LoginActivity extends BaseActivity {
     private Button login;
     private Button register;
     private CheckBox rememberPass;
-    private CheckBox showPassword;
     private Toolbar toolbar;
     private MyDatabaseHelper dbhelper;
 
@@ -35,20 +32,16 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         pref = PreferenceManager.getDefaultSharedPreferences(this);
-        toolbar = findViewById(R.id.login_toolbar);
+        toolbar = (Toolbar) findViewById(R.id.login_toolbar);
         toolbar.setTitle("登录");
         new setTitleCenter().setTitleCenter(toolbar);
-
-        accountEdit = findViewById(R.id.account);
-        passwordEdit = findViewById(R.id.password);
-        rememberPass = findViewById(R.id.remember_pass);
-        showPassword = findViewById(R.id.show_password);
-        login = findViewById(R.id.login);
-        register = findViewById(R.id.register);
+        accountEdit = (EditText) findViewById(R.id.account);
+        passwordEdit = (EditText) findViewById(R.id.password);
+        rememberPass = (CheckBox) findViewById(R.id.remember_pass);
+        login = (Button) findViewById(R.id.login);
         dbhelper = new MyDatabaseHelper(this, "Account password", null, 2);
-
+        register = (Button) findViewById(R.id.register);
         boolean isRemember = pref.getBoolean("remember_password", false);
         if (isRemember) {
             // 将账号和密码都设置到文本框中
@@ -58,7 +51,6 @@ public class LoginActivity extends BaseActivity {
             passwordEdit.setText(password);
             rememberPass.setChecked(true);
         }
-
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,7 +58,8 @@ public class LoginActivity extends BaseActivity {
                 String account = accountEdit.getText().toString();
                 String password = passwordEdit.getText().toString();
                 SQLiteDatabase db = dbhelper.getWritableDatabase();
-                Cursor cursor = db.query("Account", null, null, null, null, null, null);
+                Cursor cursor = db.query("Account", null, null,
+                        null, null, null, null);
                 if (cursor.moveToFirst()) {
                     do {
                         String hadaccount = cursor.getString(cursor.getColumnIndex("account"));
@@ -97,7 +90,6 @@ public class LoginActivity extends BaseActivity {
                 }
             }
         });
-
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,18 +102,6 @@ public class LoginActivity extends BaseActivity {
                 db.insert("Account", null, values);
                 Toast.makeText(LoginActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
             }
-        });
-
-        showPassword.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                // 显示密码
-                passwordEdit.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-            } else {
-                // 隐藏密码
-                passwordEdit.setTransformationMethod(PasswordTransformationMethod.getInstance());
-            }
-            // 光标移动到末尾
-            passwordEdit.setSelection(passwordEdit.getText().length());
         });
     }
 }
