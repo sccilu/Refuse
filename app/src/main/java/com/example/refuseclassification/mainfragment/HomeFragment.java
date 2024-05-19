@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import com.baidu.speech.EventListener;
 import com.baidu.speech.EventManager;
+import com.example.refuseclassification.ApiMainActivity;
 import com.example.refuseclassification.DryActivity;
 import com.example.refuseclassification.HarmfulActivity;
 import com.example.refuseclassification.KnowledgeDatabase;
@@ -36,6 +37,8 @@ public class HomeFragment extends Fragment implements EventListener{
     private ImageButton testAll_Button;
     private ImageButton Knowledge_Button;
     private EditText search;
+
+    private ImageButton photo_Button;
     private ImageButton recording_button;
 
     private EventManager asr;//语音识别核心库
@@ -66,6 +69,15 @@ public class HomeFragment extends Fragment implements EventListener{
             public void onClick(View v) {
                 // Start TestAllActivity when test_all_button is clicked
                 Intent intent = new Intent(getActivity(), TestAllActivity.class);
+                startActivity(intent);
+            }
+        });
+        photo_Button = (ImageButton) view.findViewById(R.id.photograph_button);
+        photo_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start TestAllActivity when test_all_button is clicked
+                Intent intent = new Intent(getActivity(), ApiMainActivity.class);
                 startActivity(intent);
             }
         });
