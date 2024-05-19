@@ -34,11 +34,8 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
+        setContentView(R.layout.frag_login);
         pref = PreferenceManager.getDefaultSharedPreferences(this);
-        toolbar = findViewById(R.id.login_toolbar);
-        toolbar.setTitle("登录");
         new setTitleCenter().setTitleCenter(toolbar);
 
         accountEdit = findViewById(R.id.account);
