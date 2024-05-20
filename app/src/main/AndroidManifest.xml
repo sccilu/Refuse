@@ -44,6 +44,8 @@
         <activity android:name=".RecyclableActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".LoginActivity" />
+        <activity android:name=".ApiMainActivity"/>
+        <activity android:name=".ApiServer.AdvancedGeneral"/>
         <activity android:name=".SpeechRecognitionActivity" />
 <!--        <activity-->
 <!--            android:name=".LoginActivity"-->
@@ -62,5 +64,14 @@
         </activity>
 
         <activity android:name=".MainActivity" />
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.refuseclassification.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 </manifest>
