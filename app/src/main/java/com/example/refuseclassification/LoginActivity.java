@@ -35,9 +35,16 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.frag_login);
-        pref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // 初始化 Toolbar
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle(""); // 设置标题
+
+        // 设置 Toolbar 标题居中
         new setTitleCenter().setTitleCenter(toolbar);
 
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
         accountEdit = findViewById(R.id.account);
         passwordEdit = findViewById(R.id.password);
         rememberPass = findViewById(R.id.remember_pass);
@@ -46,68 +53,10 @@ public class LoginActivity extends BaseActivity {
         register = findViewById(R.id.register);
         dbhelper = new MyDatabaseHelper(this, "Account password", null, 2);
 
-        boolean isRemember = pref.getBoolean("remember_password", false);
-        if (isRemember) {
-            // 将账号和密码都设置到文本框中
-            String account = pref.getString("account", "");
-            String password = pref.getString("password", "");
-            accountEdit.setText(account);
-            passwordEdit.setText(password);
-            rememberPass.setChecked(true);
-        }
+        loadSavedPreferences();
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int flag = 1;   //表示账号和密码是否正确
-                String account = accountEdit.getText().toString();
-                String password = passwordEdit.getText().toString();
-                SQLiteDatabase db = dbhelper.getWritableDatabase();
-                Cursor cursor = db.query("Account", null, null, null, null, null, null);
-                if (cursor.moveToFirst()) {
-                    do {
-                        String hadaccount = cursor.getString(cursor.getColumnIndex("account"));
-                        String hadpassword = cursor.getString(cursor.getColumnIndex("password"));
-                        if (account.equals(hadaccount) && password.equals(hadpassword)) {
-                            editor = pref.edit();
-                            if (rememberPass.isChecked()) {
-                                editor.putBoolean("remember_password", true);
-                                editor.putString("account", account);
-                                editor.putString("password", password);
-                            } else {
-                                editor.clear();
-                            }
-                            editor.apply();
-
-                            // 将当前用户账号传递到 MainActivity
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            intent.putExtra("account", account);
-                            startActivity(intent);
-                            finish();
-                            flag = 0;
-                        }
-                    } while (cursor.moveToNext());
-                }
-                cursor.close();
-                if (flag == 1) {
-                    Toast.makeText(LoginActivity.this, "账号或密码错误", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SQLiteDatabase db = dbhelper.getWritableDatabase();
-                String account = accountEdit.getText().toString();
-                String password = passwordEdit.getText().toString();
-                ContentValues values = new ContentValues();
-                values.put("account", account);
-                values.put("password", password);
-                db.insert("Account", null, values);
-                Toast.makeText(LoginActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
-            }
-        });
+        login.setOnClickListener(v -> handleLogin());
+        register.setOnClickListener(v -> handleRegister());
 
         showPassword.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
@@ -120,5 +69,75 @@ public class LoginActivity extends BaseActivity {
             // 光标移动到末尾
             passwordEdit.setSelection(passwordEdit.getText().length());
         });
+    }
+
+    private void loadSavedPreferences() {
+        boolean isRemember = pref.getBoolean("remember_password", false);
+        if (isRemember) {
+            // 将账号和密码都设置到文本框中
+            String account = pref.getString("account", "");
+            String password = pref.getString("password", "");
+            accountEdit.setText(account);
+            passwordEdit.setText(password);
+            rememberPass.setChecked(true);
+        }
+    }
+
+    private void handleLogin() {
+        String account = accountEdit.getText().toString();
+        String password = passwordEdit.getText().toString();
+        SQLiteDatabase db = dbhelper.getWritableDatabase();
+        Cursor cursor = db.query("Account", null, null, null, null, null, null);
+        boolean loginSuccess = false;
+        if (cursor.moveToFirst()) {
+            do {
+                String hadaccount = cursor.getString(cursor.getColumnIndex("account"));
+                String hadpassword = cursor.getString(cursor.getColumnIndex("password"));
+                if (account.equals(hadaccount) && password.equals(hadpassword)) {
+                    savePreferences(account, password);
+                    navigateToMainActivity(account);
+                    loginSuccess = true;
+                    break;
+                }
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        if (!loginSuccess) {
+            Toast.makeText(LoginActivity.this, "账号或密码错误", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void handleRegister() {
+        String account = accountEdit.getText().toString();
+        String password = passwordEdit.getText().toString();
+        if (account.isEmpty() || password.isEmpty()) {
+            Toast.makeText(LoginActivity.this, "账户和密码不能为空", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        SQLiteDatabase db = dbhelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("account", account);
+        values.put("password", password);
+        db.insert("Account", null, values);
+        Toast.makeText(LoginActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+    }
+
+    private void savePreferences(String account, String password) {
+        editor = pref.edit();
+        if (rememberPass.isChecked()) {
+            editor.putBoolean("remember_password", true);
+            editor.putString("account", account);
+            editor.putString("password", password);
+        } else {
+            editor.clear();
+        }
+        editor.apply();
+    }
+
+    private void navigateToMainActivity(String account) {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        intent.putExtra("account", account);
+        startActivity(intent);
+        finish();
     }
 }
