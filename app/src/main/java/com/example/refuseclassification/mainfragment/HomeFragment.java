@@ -30,9 +30,7 @@ import com.example.refuseclassification.setTitleCenter;
 
 import java.util.ArrayList;
 
-
-
-public class HomeFragment extends Fragment implements EventListener{
+public class HomeFragment extends Fragment implements EventListener {
 
     private Toolbar toolbar;
     private ImageButton testAll_Button;
@@ -43,7 +41,7 @@ public class HomeFragment extends Fragment implements EventListener{
     private ImageButton recording_button;
     private ImageButton recordingButton;
 
-    private EventManager asr;//语音识别核心库
+    private EventManager asr; // 语音识别核心库
     private String result;
 
     @Override
@@ -51,10 +49,10 @@ public class HomeFragment extends Fragment implements EventListener{
         View view = inflater.inflate(R.layout.frag_home, container, false);
         toolbar = (Toolbar) view.findViewById(R.id.home_toolbar);
         toolbar.setTitle("首页");
-        new setTitleCenter().setTitleCenter(toolbar);// 初始化ToolBar
-        new KnowledgeDatabase().setKnowledgeDatabase();// 初始化数据库
-        // 绑定按钮以及事件
+        new setTitleCenter().setTitleCenter(toolbar); // 初始化ToolBar
+        new KnowledgeDatabase().setKnowledgeDatabase(); // 初始化数据库
 
+        // 绑定按钮以及事件
         Knowledge_Button = (ImageButton) view.findViewById(R.id.knowledge_button);
         Knowledge_Button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,13 +72,13 @@ public class HomeFragment extends Fragment implements EventListener{
                 startActivity(intent);
             }
         });
+
         photo_Button = (ImageButton) view.findViewById(R.id.photograph_button);
         photo_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Start TestAllActivity when test_all_button is clicked
-                Intent intent = new Intent(getActivity(), ApiMainActivity.class);
-                startActivity(intent);
+                // 调用 ApiMainActivity 的静态方法启动拍照
+                ApiMainActivity.startPhotoCapture(getActivity());
             }
         });
 
@@ -95,7 +93,7 @@ public class HomeFragment extends Fragment implements EventListener{
 
 
         search = (EditText) view.findViewById(R.id.searchHome);
-        search.setFocusable(false);//失去焦点
+        search.setFocusable(false); // 失去焦点
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
