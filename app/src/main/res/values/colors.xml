@@ -3,4 +3,6 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="pressed_button">#FF0000</color> <!-- 按下时的颜色 -->
+    <color name="default_button">#00FF00</color> <!-- 默认颜色-->
 </resources>

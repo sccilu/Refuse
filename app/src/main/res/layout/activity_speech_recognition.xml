@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <EditText
+        android:id="@+id/dialog_et_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="识别到的内容"
+        android:background="@drawable/edit_text_background"
+        android:padding="10dp" />
+
+    <Button
+        android:id="@+id/btn_hold_to_speak"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="按住说话"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_background"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="确认"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_background"
+        android:textColor="#FFFFFF" />
+
+</LinearLayout>

@@ -3,6 +3,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <!-- 蓝牙录音使用，不需要可以去除 -->
     <uses-permission android:name="android.permission.BROADCAST_STICKY" />
@@ -12,12 +13,12 @@
     <application>
         <meta-data
             android:name="com.baidu.speech.APP_ID"
-            android:value="25415468"/>
+            android:value="70543063"/>
         <meta-data
-                android:name="com.baidu.speech.API_KEY"
-                android:value="iCYsEmwScqNGAlzDbZcl7vh4"/>
+            android:name="com.baidu.speech.API_KEY"
+            android:value="GDqdrjR8QQ8BzkVkBOyS0BTU"/>
         <meta-data
-                android:name="com.baidu.speech.SECRET_KEY"
-                android:value="WakD4dM6hykhHreHjQ5uNayIXnP3BSSp"/>
+            android:name="com.baidu.speech.SECRET_KEY"
+            android:value="Jy6Ee1fp9fSdfvqNoMiQqGRwkLkAxYSI"/>
     </application>
 </manifest>

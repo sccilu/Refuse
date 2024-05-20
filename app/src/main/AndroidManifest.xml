@@ -44,6 +44,7 @@
         <activity android:name=".RecyclableActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".LoginActivity" />
+        <activity android:name=".SpeechRecognitionActivity" />
 <!--        <activity-->
 <!--            android:name=".LoginActivity"-->
 <!--            android:label="Trash Separation">-->

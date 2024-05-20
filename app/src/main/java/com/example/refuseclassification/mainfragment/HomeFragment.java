@@ -23,6 +23,7 @@ import com.example.refuseclassification.KnowledgeDatabase;
 import com.example.refuseclassification.R;
 import com.example.refuseclassification.RecyclableActivity;
 import com.example.refuseclassification.SearchActivity;
+import com.example.refuseclassification.SpeechRecognitionActivity;
 import com.example.refuseclassification.WetActivity;
 import com.example.refuseclassification.setTitleCenter;
 
@@ -36,7 +37,7 @@ public class HomeFragment extends Fragment implements EventListener{
     private ImageButton testAll_Button;
     private ImageButton Knowledge_Button;
     private EditText search;
-    private ImageButton recording_button;
+    private ImageButton recordingButton;
 
     private EventManager asr;//语音识别核心库
     private String result;
@@ -69,6 +70,16 @@ public class HomeFragment extends Fragment implements EventListener{
                 startActivity(intent);
             }
         });
+
+        recordingButton = view.findViewById(R.id.recording_button);
+        recordingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SpeechRecognitionActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         search = (EditText) view.findViewById(R.id.searchHome);
         search.setFocusable(false);//失去焦点
