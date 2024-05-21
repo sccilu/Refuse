@@ -1,64 +1,40 @@
 package com.example.refuseclassification.ApiServer;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.refuseclassification.R;
-
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-/**
- * 通用物体和场景识别
- */
-public class AdvancedGeneral extends AppCompatActivity {
+import org.json.JSONObject;
 
-    private TextView resultTextView;
+public class AdvancedGeneral {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.frag_home); // 确保这里的布局文件是正确的
-
-        resultTextView = findViewById(R.id.searchHome);
-
-        Intent intent = getIntent();
-        String photoPath = intent.getStringExtra("photoPath");
-        if (photoPath != null) {
-            new Thread(() -> {
-                try {
-                    recognizeImage(photoPath);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }).start();
-        }
-    }
-
-    private void recognizeImage(String photoPath) throws Exception {
+    public static String recognizeImage(String photoPath) throws Exception {
         byte[] imgData = FileUtil.readFileByBytes(photoPath);
         String imgStr = Base64Util.encode(imgData);
         String imgParam = URLEncoder.encode(imgStr, "UTF-8");
 
         String result = HttpUtil.post("https://aip.baidubce.com/rest/2.0/image-classify/v2/advanced_general", getAuth(), "image=" + imgParam);
 
-        runOnUiThread(() -> resultTextView.setText(result));
+        // 解析返回的结果
+        JSONObject jsonObject = new JSONObject(result);
+        StringBuilder sb = new StringBuilder();
+        if (jsonObject.has("result")) {
+            for (int i = 0; i < jsonObject.getJSONArray("result").length(); i++) {
+                sb.append(jsonObject.getJSONArray("result").getJSONObject(i).getString("keyword")).append("\n");
+            }
+        }
+        return sb.toString();
     }
 
-    private String getAuth() {
+    private static String getAuth() {
         String clientId = "HrnD2t1tVs89DcF0v9FdB4Tu";
         String clientSecret = "78uLd0yok6LC86zztszz6TRDoqO5kP35";
         return getAuth(clientId, clientSecret);
     }
 
-    private String getAuth(String ak, String sk) {
+    private static String getAuth(String ak, String sk) {
         String authHost = "https://aip.baidubce.com/oauth/2.0/token?";
         String getAccessTokenUrl = authHost + "grant_type=client_credentials" + "&client_id=" + ak + "&client_secret=" + sk;
         try {
