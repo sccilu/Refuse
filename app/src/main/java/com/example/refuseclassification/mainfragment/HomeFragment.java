@@ -33,7 +33,6 @@ import com.example.refuseclassification.setTitleCenter;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class HomeFragment extends Fragment {
