@@ -1,10 +1,15 @@
 package com.example.refuseclassification.mainfragment;
+
+import static android.app.Activity.RESULT_OK;
+import static android.content.Context.NOTIFICATION_SERVICE;
+
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -14,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +27,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
@@ -33,14 +36,12 @@ import androidx.fragment.app.Fragment;
 import com.example.refuseclassification.AboutActivity;
 import com.example.refuseclassification.AgreementActivity;
 import com.example.refuseclassification.ChangePasswordActivity;
+import com.example.refuseclassification.FeedbackActivity;
 import com.example.refuseclassification.NotificationActivity;
 import com.example.refuseclassification.R;
 import com.example.refuseclassification.setTitleCenter;
 
 import java.io.File;
-
-import static android.app.Activity.RESULT_OK;
-import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class SettingFragment extends Fragment {
 
@@ -175,9 +176,18 @@ public class SettingFragment extends Fragment {
             }
         });
 
+        // 反馈按钮的设置
+        View feedback = view.findViewById(R.id.text_feedback);
+        feedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), FeedbackActivity.class);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
-
     private void showTypeDialog() {
         // 显示对话框
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

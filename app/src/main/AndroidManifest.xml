@@ -47,6 +47,7 @@
         <activity android:name=".ApiMainActivity"/>
         <activity android:name=".ApiServer.AdvancedGeneral"/>
         <activity android:name=".SpeechRecognitionActivity" />
+        <activity android:name=".FeedbackActivity" />
 <!--        <activity-->
 <!--            android:name=".LoginActivity"-->
 <!--            android:label="Trash Separation">-->
