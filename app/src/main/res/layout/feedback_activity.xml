@@ -1,0 +1,35 @@
+<!-- res/layout/feedback_activity.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/feedback_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入您的反馈内容"
+        android:inputType="textMultiLine"
+        android:gravity="top"
+        android:minHeight="120dp" />
+
+    <EditText
+        android:id="@+id/contact_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入您的联系方式" />
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入您的邮箱"
+        android:inputType="textEmailAddress" />
+
+    <Button
+        android:id="@+id/send_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发送反馈" />
+</LinearLayout>

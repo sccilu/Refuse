@@ -36,6 +36,7 @@ import androidx.fragment.app.Fragment;
 import com.example.refuseclassification.AboutActivity;
 import com.example.refuseclassification.AgreementActivity;
 import com.example.refuseclassification.ChangePasswordActivity;
+import com.example.refuseclassification.FeedbackActivity;
 import com.example.refuseclassification.NotificationActivity;
 import com.example.refuseclassification.R;
 import com.example.refuseclassification.setTitleCenter;
@@ -175,9 +176,18 @@ public class SettingFragment extends Fragment {
             }
         });
 
+        // 反馈按钮的设置
+        View feedback = view.findViewById(R.id.text_feedback);
+        feedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), FeedbackActivity.class);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
-
     private void showTypeDialog() {
         // 显示对话框
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
