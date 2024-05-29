@@ -19,7 +19,7 @@ public class HarmfulFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frag_harmful, container, false);
         webView = (WebView) view.findViewById(R.id.harmful_web);
-        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setJavaScriptEnabled(true);//likumjhnfg
         webView.setWebViewClient(new WebViewClient());
         webView.loadUrl("https://baike.baidu.com/item/%E6%9C%89%E5%AE%B3%E5%9E%83%E5%9C%BE");
         return view;
