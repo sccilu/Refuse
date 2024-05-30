@@ -20,30 +20,31 @@ import android.widget.Toast;
 
 public class LoginActivity extends BaseActivity {
 
-    private SharedPreferences pref;
-    private SharedPreferences.Editor editor;
-    private EditText accountEdit;
-    private EditText passwordEdit;
-    private Button login;
-    private Button register;
-    private CheckBox rememberPass;
-    private CheckBox showPassword;
-    private Toolbar toolbar;
-    private MyDatabaseHelper dbhelper;
+    private SharedPreferences pref;  // 用于保存用户偏好设置的对象
+    private SharedPreferences.Editor editor;  // 用于编辑 SharedPreferences 的对象
+    private EditText accountEdit;  // 用户名输入框
+    private EditText passwordEdit;  // 密码输入框
+    private Button login;  // 登录按钮
+    private Button register;  // 注册按钮
+    private CheckBox rememberPass;  // 记住密码复选框
+    private CheckBox showPassword;  // 显示密码复选框
+    private Toolbar toolbar;  // 工具栏
+    private MyDatabaseHelper dbhelper;  // 数据库帮助类实例
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.frag_login);
+        setContentView(R.layout.frag_login);  // 设置布局文件
 
         // 初始化 Toolbar
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle(""); // 设置标题
+        toolbar.setTitle(""); // 设置标题为空
 
         // 设置 Toolbar 标题居中
         new setTitleCenter().setTitleCenter(toolbar);
 
+        // 初始化 SharedPreferences 和界面控件
         pref = PreferenceManager.getDefaultSharedPreferences(this);
         accountEdit = findViewById(R.id.account);
         passwordEdit = findViewById(R.id.password);
@@ -53,11 +54,16 @@ public class LoginActivity extends BaseActivity {
         register = findViewById(R.id.register);
         dbhelper = new MyDatabaseHelper(this, "Account password", null, 2);
 
+        // 加载保存的偏好设置
         loadSavedPreferences();
 
+        // 设置登录按钮的点击事件监听器
         login.setOnClickListener(v -> handleLogin());
+
+        // 设置注册按钮的点击事件监听器
         register.setOnClickListener(v -> handleRegister());
 
+        // 设置显示密码复选框的选中状态改变事件监听器
         showPassword.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 // 显示密码
@@ -71,6 +77,7 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
+    // 加载保存的偏好设置
     private void loadSavedPreferences() {
         boolean isRemember = pref.getBoolean("remember_password", false);
         if (isRemember) {
@@ -83,6 +90,7 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+    // 处理登录逻辑
     private void handleLogin() {
         String account = accountEdit.getText().toString();
         String password = passwordEdit.getText().toString();
@@ -94,6 +102,7 @@ public class LoginActivity extends BaseActivity {
                 String hadaccount = cursor.getString(cursor.getColumnIndex("account"));
                 String hadpassword = cursor.getString(cursor.getColumnIndex("password"));
                 if (account.equals(hadaccount) && password.equals(hadpassword)) {
+                    // 如果账号密码匹配，保存偏好设置并跳转到主界面
                     savePreferences(account, password);
                     navigateToMainActivity(account);
                     loginSuccess = true;
@@ -107,6 +116,7 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+    // 处理注册逻辑
     private void handleRegister() {
         String account = accountEdit.getText().toString();
         String password = passwordEdit.getText().toString();
@@ -122,6 +132,7 @@ public class LoginActivity extends BaseActivity {
         Toast.makeText(LoginActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
     }
 
+    // 保存偏好设置
     private void savePreferences(String account, String password) {
         editor = pref.edit();
         if (rememberPass.isChecked()) {
@@ -134,6 +145,7 @@ public class LoginActivity extends BaseActivity {
         editor.apply();
     }
 
+    // 跳转到主界面
     private void navigateToMainActivity(String account) {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         intent.putExtra("account", account);
