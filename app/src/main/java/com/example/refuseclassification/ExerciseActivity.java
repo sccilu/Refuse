@@ -24,7 +24,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-
+/**
+ * scc
+ */
 public class ExerciseActivity extends BaseActivity{
 
     private Toolbar toolbar;
@@ -53,7 +55,7 @@ public class ExerciseActivity extends BaseActivity{
         // 初始化随机数列表，10个1~100的数
         Set<Integer> hashSet = new HashSet<Integer>();
         while (hashSet.size() != 10) {
-            int number = (int) (Math.random() * 100);
+            int number = (int) (Math.random() * 400);
             hashSet.add(number);
         }
         // 初始化问题列表

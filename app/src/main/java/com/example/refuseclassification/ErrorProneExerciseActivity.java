@@ -1,12 +1,10 @@
 package com.example.refuseclassification;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -22,10 +20,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
-
-public class CommonActivity extends BaseActivity {
+/**
+ * scc
+ */
+public class ErrorProneExerciseActivity extends BaseActivity{
 
     private Toolbar toolbar;
     private TextView question_num;
@@ -45,9 +44,9 @@ public class CommonActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_common);
+        setContentView(R.layout.activity_error_prone);
         toolbar = (Toolbar) findViewById(R.id.test_toolbar);
-        toolbar.setTitle("常见");
+        toolbar.setTitle("易错");
         count = -1;
         new setTitleCenter().setTitleCenter(toolbar);// 初始化ToolBar
         // 初始化随机数列表，10个1~100的数
@@ -134,7 +133,7 @@ public class CommonActivity extends BaseActivity {
                     }
                 }
                 else {
-                    Intent intent = new Intent(CommonActivity.this, AnswerActivity.class);
+                    Intent intent = new Intent(ErrorProneExerciseActivity.this, AnswerActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("knowledges", (Serializable) knowledges);
                     bundle.putInt("score", score);

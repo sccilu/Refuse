@@ -1,12 +1,10 @@
 package com.example.refuseclassification;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -22,10 +20,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
-
-public class ErrorProneActivity extends BaseActivity{
+/**
+ * scc
+ */
+public class SpecialExerciseActivity extends BaseActivity{
 
     private Toolbar toolbar;
     private TextView question_num;
@@ -37,7 +36,6 @@ public class ErrorProneActivity extends BaseActivity{
     private RadioButton answer3;
     private RadioButton answer4;
     private List<Knowledge> knowledges = new ArrayList<>();
-    private List<String> answers = new ArrayList<>();
     private String answer = "";
     private int score = 0;
     private int count;
@@ -45,9 +43,9 @@ public class ErrorProneActivity extends BaseActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_error_prone);
+        setContentView(R.layout.activity_special);
         toolbar = (Toolbar) findViewById(R.id.test_toolbar);
-        toolbar.setTitle("易错");
+        toolbar.setTitle("专项");
         count = -1;
         new setTitleCenter().setTitleCenter(toolbar);// 初始化ToolBar
         // 初始化随机数列表，10个1~100的数
@@ -134,7 +132,8 @@ public class ErrorProneActivity extends BaseActivity{
                     }
                 }
                 else {
-                    Intent intent = new Intent(ErrorProneActivity.this, AnswerActivity.class);
+                    Intent intent = new Intent(SpecialExerciseActivity.this,
+                            AnswerActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("knowledges", (Serializable) knowledges);
                     bundle.putInt("score", score);

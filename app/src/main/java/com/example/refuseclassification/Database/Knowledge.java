@@ -8,6 +8,9 @@ import java.io.Serializable;
  * 代表知识数据库表的实体类
  * 继承自 LitePalSupport 以支持 LitePal 的 ORM 功能
  */
+/**
+ * scc
+ */
 public class Knowledge extends LitePalSupport implements Serializable {
 
     // 知识项的唯一标识符

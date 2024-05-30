@@ -37,6 +37,7 @@ import java.util.Date;
 
 public class HomeFragment extends Fragment {
 
+    // 定义常量，用于请求图片捕捉和相机权限
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_CAMERA_PERMISSION = 2;
     private String currentPhotoPath;
@@ -52,13 +53,14 @@ public class HomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // 加载并返回布局文件
         View view = inflater.inflate(R.layout.frag_home, container, false);
         toolbar = view.findViewById(R.id.home_toolbar);
         toolbar.setTitle("首页");
         new setTitleCenter().setTitleCenter(toolbar); // 初始化ToolBar
         new KnowledgeDatabase().setKnowledgeDatabase(); // 初始化数据库
 
-        // 绑定按钮以及事件
+        // 绑定知识按钮并设置点击事件
         Knowledge_Button = view.findViewById(R.id.knowledge_button);
         Knowledge_Button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +71,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        // 绑定测试按钮并设置点击事件
         testAll_Button = view.findViewById(R.id.test_all_button);
         testAll_Button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,11 +81,15 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
+        /**
+         * scc
+         */
+        // 绑定拍照按钮并设置点击事件
         photo_Button = view.findViewById(R.id.photograph_button);
         photo_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 检查相机权限
                 if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
                         != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
@@ -92,20 +99,24 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        // 绑定录音按钮并设置点击事件
         recording_Button = view.findViewById(R.id.recording_button);
         recording_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 启动 SpeechRecognitionActivity
                 Intent intent = new Intent(getActivity(), SpeechRecognitionActivity.class);
                 startActivity(intent);
             }
         });
 
+        // 绑定搜索框并设置点击事件
         search = view.findViewById(R.id.searchHome);
         search.setFocusable(false); // 失去焦点
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 启动 SearchActivity
                 Intent intent = new Intent(getActivity(), SearchActivity.class);
                 startActivity(intent);
             }
@@ -114,6 +125,7 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    // 分发拍照意图
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
@@ -133,14 +145,15 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    // 创建图片文件
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
-                imageFileName,
-                ".jpg",
-                storageDir
+                imageFileName,  // 文件前缀
+                ".jpg",   // 文件后缀
+                storageDir // 存储目录
         );
         currentPhotoPath = image.getAbsolutePath();
         return image;
@@ -171,7 +184,7 @@ public class HomeFragment extends Fragment {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 dispatchTakePictureIntent();
             } else {
-                Toast.makeText(getContext(), "Camera permission is required to use this feature", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "需要相机权限才能使用此功能", Toast.LENGTH_SHORT).show();
             }
         }
     }

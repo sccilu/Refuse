@@ -1,10 +1,11 @@
 package com.example.refuseclassification.Database;
 
-import com.example.refuseclassification.Database.Knowledge;
 
 import org.litepal.LitePal;
 import java.util.List;
-
+/**
+ * scc
+ */
 public class KnowledgeDatabase {
 
     String[] name = {"苹果核", "橙子皮", "西瓜皮", "香蕉皮", "芒果核", "菠萝皮", "葡萄枝", "柚子皮", "柠檬皮", "桃子核", "李子核", "梨皮", "荔枝核", "榴莲壳", "火龙果皮", "桂圆壳", "龙眼壳", "石榴皮", "菠萝蜜核", "芒果皮", "枇杷核", "椰子壳", "草莓叶", "车厘子核", "树莓叶", "哈密瓜皮", "无花果皮", "番石榴皮", "香瓜皮", "菜瓜皮", "甜瓜皮", "哈密瓜籽", "枸杞枝", "山竹皮", "樱桃核", "柿子皮", "山楂核", "杨梅核", "榨菜", "莴笋叶", "韭菜叶", "苦瓜皮", "辣椒梗", "茄子梗", "西红柿梗", "黄瓜梗", "南瓜皮", "青椒梗", "韭黄", "芹菜叶", "西葫芦皮", "土豆皮", "蒜皮", "洋葱皮", "姜皮", "芋头皮", "豆角皮", "花生壳", "栗子壳", "板栗壳", "榛子壳", "松子壳", "核桃壳", "胡桃壳", "花椒壳", "辣椒皮", "大葱皮", "小葱皮", "香菜叶", "香葱叶", "生菜叶", "韭菜梗", "芦笋", "冬笋皮", "竹笋皮", "黄秧白", "苦瓜藤", "辣椒叶", "大蒜叶", "洋葱叶", "葱白", "葱根", "芹菜梗", "西葫芦梗", "菜花", "卷心菜叶", "生菜根", "莲藕皮", "藕节", "茭白皮", "芦笋皮", "菠菜叶", "花生皮", "蚕豆壳", "绿豆壳", "芸豆壳", "扁豆壳", "毛豆壳", "豌豆壳", "刀豆壳", "红豆壳", "白豆壳", "黑豆壳", "青豆壳",
@@ -16,7 +17,7 @@ public class KnowledgeDatabase {
 
     public void setKnowledgeDatabase() {
         LitePal.getDatabase();
-        for (int i = 0; i < 380; i++) {
+        for (int i = 0; i < 400; i++) {
             // 获取数据表数据,查询是否有相同数据，防止重复插入
             List<Knowledge> knowledges = LitePal.where("id = ?", String.valueOf(i + 1))
                     .find(Knowledge.class);

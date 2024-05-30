@@ -1,12 +1,10 @@
 package com.example.refuseclassification;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -22,10 +20,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
-
-public class SpecialActivity extends BaseActivity{
+/**
+ * scc
+ */
+public class TestExerciseActivity extends BaseActivity{
 
     private Toolbar toolbar;
     private TextView question_num;
@@ -44,9 +43,9 @@ public class SpecialActivity extends BaseActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_special);
+        setContentView(R.layout.activity_test);
         toolbar = (Toolbar) findViewById(R.id.test_toolbar);
-        toolbar.setTitle("专项");
+        toolbar.setTitle("模拟考试");
         count = -1;
         new setTitleCenter().setTitleCenter(toolbar);// 初始化ToolBar
         // 初始化随机数列表，10个1~100的数
@@ -133,7 +132,7 @@ public class SpecialActivity extends BaseActivity{
                     }
                 }
                 else {
-                    Intent intent = new Intent(SpecialActivity.this,
+                    Intent intent = new Intent(TestExerciseActivity.this,
                             AnswerActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("knowledges", (Serializable) knowledges);

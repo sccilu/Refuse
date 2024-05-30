@@ -31,11 +31,11 @@
         <activity android:name=".AgreementActivity" />
         <activity android:name=".AboutActivity" />
         <activity android:name=".mainfragment.TestAllActivity"/>
-        <activity android:name=".TestActivity"/>
+        <activity android:name=".TestExerciseActivity"/>
         <activity android:name=".mainfragment.KnowledgeActivity" />
-        <activity android:name=".SpecialActivity" />
-        <activity android:name=".ErrorProneActivity" />
-        <activity android:name=".CommonActivity" />
+        <activity android:name=".SpecialExerciseActivity" />
+        <activity android:name=".ErrorProneExerciseActivity" />
+        <activity android:name=".CommonExerciseActivity" />
         <activity android:name=".ExerciseActivity" />
         <activity android:name=".AnswerActivity" />
         <activity android:name=".DryActivity" />
@@ -44,7 +44,6 @@
         <activity android:name=".RecyclableActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".ApiMainActivity"/>
         <activity android:name=".ApiServer.AdvancedGeneral"/>
         <activity android:name=".SpeechRecognitionActivity" />
         <activity android:name=".FeedbackActivity" />
