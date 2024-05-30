@@ -26,13 +26,9 @@ public class DatabaseTest {
      * 插入测试数据到数据库
      */
     private static void insertTestData() {
-        Knowledge knowledge1 = new Knowledge(1, "塑料瓶", "可回收物", "可以回收利用，扔到可回收物垃圾桶");
-        Knowledge knowledge2 = new Knowledge(2, "香蕉皮", "厨余垃圾", "属于有机垃圾，扔到厨余垃圾桶");
-        Knowledge knowledge3 = new Knowledge(3, "电池", "有害垃圾", "含有重金属污染物，扔到有害垃圾桶");
+        Knowledge knowledge1 = new Knowledge(101, "塑料瓶", "可回收物", " ");
 
         knowledge1.save();
-        knowledge2.save();
-        knowledge3.save();
 
         System.out.println("测试数据已插入");
     }
