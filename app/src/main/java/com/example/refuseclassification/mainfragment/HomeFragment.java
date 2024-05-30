@@ -24,7 +24,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.example.refuseclassification.ApiServer.AdvancedGeneral;
-import com.example.refuseclassification.KnowledgeDatabase;
+import com.example.refuseclassification.Database.KnowledgeDatabase;
 import com.example.refuseclassification.R;
 import com.example.refuseclassification.SearchActivity;
 import com.example.refuseclassification.SpeechRecognitionActivity;
