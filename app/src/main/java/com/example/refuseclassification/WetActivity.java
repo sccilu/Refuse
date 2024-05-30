@@ -19,32 +19,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WetActivity extends BaseActivity {
-    private Toolbar toolbar;
-    RecyclerView recyclerView;
-    List<Knowledge> knowledges = new ArrayList<>();
-    WetActivity.MyAdapter myAdapter;
+    private Toolbar toolbar; // 工具栏
+    RecyclerView recyclerView; // RecyclerView 列表视图
+    List<Knowledge> knowledges = new ArrayList<>(); // 数据列表
+    WetActivity.MyAdapter myAdapter; // 自定义适配器
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wet);
-        toolbar = (Toolbar) findViewById(R.id.wet_toolbar);
+
+        // 初始化工具栏并设置标题
+        toolbar = findViewById(R.id.wet_toolbar);
         toolbar.setTitle("湿垃圾");
-        new setTitleCenter().setTitleCenter(toolbar);
-        // 编写列表内容
+        new setTitleCenter().setTitleCenter(toolbar); // 设置标题居中
+
+        // 初始化RecyclerView
         recyclerView = findViewById(R.id.wet_recyclerView);
-        knowledges = LitePal.where("kind = ?", "湿垃圾").find(Knowledge.class);
+        knowledges = LitePal.where("kind = ?", "湿垃圾").find(Knowledge.class); // 查询数据库中所有 "湿垃圾" 类型的知识项
         myAdapter = new WetActivity.MyAdapter();
-        recyclerView.setAdapter(myAdapter);
-        LinearLayoutManager manager = new LinearLayoutManager(WetActivity.this);
+        recyclerView.setAdapter(myAdapter); // 设置适配器
+        LinearLayoutManager manager = new LinearLayoutManager(WetActivity.this); // 设置布局管理器
         recyclerView.setLayoutManager(manager);
     }
 
+    // 自定义RecyclerView适配器
     class MyAdapter extends RecyclerView.Adapter<WetActivity.MyViewHolder> {
 
         @NonNull
         @Override
         public WetActivity.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            // 创建并返回自定义的ViewHolder
             View view = View.inflate(WetActivity.this, R.layout.item_recyclerview, null);
             WetActivity.MyViewHolder myViewHolder = new WetActivity.MyViewHolder(view);
             return myViewHolder;
@@ -52,26 +57,29 @@ public class WetActivity extends BaseActivity {
 
         @Override
         public void onBindViewHolder(@NonNull WetActivity.MyViewHolder holder, int position) {
+            // 绑定数据到ViewHolder
             Knowledge knowledge = knowledges.get(position);
-            holder.name.setText(knowledge.getName());
-            //holder.kind.setText((knowledge.getKind()));
+            holder.name.setText(knowledge.getName()); // 设置名称
+            // holder.kind.setText(knowledge.getKind()); // 设置种类（此处被注释掉了）
         }
 
         @Override
         public int getItemCount() {
+            // 返回列表项的总数
             return knowledges.size();
         }
     }
 
+    // 自定义ViewHolder
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView name;
-        TextView kind;
+        TextView name; // 名称TextView
+        TextView kind; // 种类TextView
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.name);
-            kind = itemView.findViewById(R.id.kind);
+            name = itemView.findViewById(R.id.name); // 初始化名称TextView
+            kind = itemView.findViewById(R.id.kind); // 初始化种类TextView（此处没有实际使用）
         }
     }
 }

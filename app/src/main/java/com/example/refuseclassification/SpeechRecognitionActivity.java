@@ -1,4 +1,5 @@
 package com.example.refuseclassification;
+//解裔地
 
 import android.Manifest;
 import android.content.Intent;
