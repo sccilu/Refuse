@@ -1,4 +1,4 @@
-package com.example.refuseclassification;
+package com.example.refuseclassification;//wsy
 
 import androidx.appcompat.app.AppCompatActivity;
 
