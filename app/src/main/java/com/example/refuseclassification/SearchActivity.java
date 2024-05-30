@@ -37,6 +37,7 @@ public class SearchActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        // 初始化工具栏
         toolbar = findViewById(R.id.search_toolbar);
         toolbar.setTitle("搜索");
         new setTitleCenter().setTitleCenter(toolbar);
@@ -58,11 +59,12 @@ public class SearchActivity extends BaseActivity {
             filterKnowledgeList(record);
         }
 
+        // 添加文本变化监听器
         editText.addTextChangedListener(new TextWatcher() {
             // 输入文本前的状态
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // No action needed here
+                // 不需要进行任何操作
             }
 
             // 输入文本时的状态
@@ -74,11 +76,12 @@ public class SearchActivity extends BaseActivity {
             // 输入文本之后的状态
             @Override
             public void afterTextChanged(Editable s) {
-                // No action needed here
+                // 不需要进行任何操作
             }
         });
     }
 
+    // 过滤知识列表
     private void filterKnowledgeList(String query) {
         knowledges.clear();
         if (!TextUtils.isEmpty(query)) {
@@ -89,6 +92,7 @@ public class SearchActivity extends BaseActivity {
         myAdapter.notifyDataSetChanged();
     }
 
+    // 自定义RecyclerView适配器
     private class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
         private List<Knowledge> knowledgeList;
@@ -97,6 +101,7 @@ public class SearchActivity extends BaseActivity {
             this.knowledgeList = knowledgeList;
         }
 
+        // 创建ViewHolder
         @NonNull
         @Override
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -104,6 +109,7 @@ public class SearchActivity extends BaseActivity {
             return new MyViewHolder(view);
         }
 
+        // 绑定ViewHolder
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             Knowledge knowledge = knowledgeList.get(position);
@@ -111,12 +117,14 @@ public class SearchActivity extends BaseActivity {
             holder.kind.setText(knowledge.getKind());
         }
 
+        // 获取列表项数量
         @Override
         public int getItemCount() {
             return knowledgeList.size();
         }
     }
 
+    // 自定义ViewHolder
     private static class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView name;
