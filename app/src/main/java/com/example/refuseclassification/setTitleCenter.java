@@ -10,6 +10,7 @@ public class setTitleCenter {
     public void setTitleCenter(Toolbar toolbar) {
         if (toolbar == null) return;
 
+
         toolbar.post(() -> {
             for (int i = 0; i < toolbar.getChildCount(); i++) {
                 View view = toolbar.getChildAt(i);

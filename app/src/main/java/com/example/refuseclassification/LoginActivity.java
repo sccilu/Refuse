@@ -22,7 +22,7 @@ public class LoginActivity extends BaseActivity {
 
     private SharedPreferences pref;  // 用于保存用户偏好设置的对象
     private SharedPreferences.Editor editor;  // 用于编辑 SharedPreferences 的对象
-    private EditText accountEdit;  // 用户名输入框
+    private EditText accountEdit;  //   用户名输入框
     private EditText passwordEdit;  // 密码输入框
     private Button login;  // 登录按钮
     private Button register;  // 注册按钮
