@@ -49,6 +49,7 @@ public class HomeFragment extends Fragment {
 
     private ImageButton photo_Button;
 
+    //录音功能
     private ImageButton recording_Button;
 
     @Override
