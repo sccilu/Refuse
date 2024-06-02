@@ -144,13 +144,6 @@ public class SettingFragment extends Fragment {
             }
         });
 
-        version = view.findViewById(R.id.text_version);
-        version.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "当前已是最新版本", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         logout = view.findViewById(R.id.text_logout);
         logout.setOnClickListener(new View.OnClickListener() {

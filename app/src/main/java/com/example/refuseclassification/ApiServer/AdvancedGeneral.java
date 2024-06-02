@@ -11,13 +11,19 @@ import org.json.JSONObject;
 public class AdvancedGeneral {
 
     public static String recognizeImage(String photoPath) throws Exception {
+        // 读取图像文件并将其转换为字节数组
         byte[] imgData = FileUtil.readFileByBytes(photoPath);
+
+        // 将字节数组编码为Base64字符串
         String imgStr = Base64Util.encode(imgData);
+
+        // 将Base64字符串进行URL编码
         String imgParam = URLEncoder.encode(imgStr, "UTF-8");
 
+        // 发送HTTP POST请求到百度AI图像识别API，并获取结果
         String result = HttpUtil.post("https://aip.baidubce.com/rest/2.0/image-classify/v2/advanced_general", getAuth(), "image=" + imgParam);
 
-        // 解析返回的结果
+        // 解析返回的JSON结果
         JSONObject jsonObject = new JSONObject(result);
         StringBuilder sb = new StringBuilder();
         if (jsonObject.has("result")) {
@@ -27,6 +33,7 @@ public class AdvancedGeneral {
         }
         return sb.toString();
     }
+
 
     private static String getAuth() {
         String clientId = "HrnD2t1tVs89DcF0v9FdB4Tu";

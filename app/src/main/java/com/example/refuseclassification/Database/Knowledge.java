@@ -29,7 +29,6 @@ public class Knowledge extends LitePalSupport implements Serializable {
     public Knowledge() {
 
     }
-
     /**
      * 带参构造函数
      * 用于创建带有初始值的 Knowledge 对象
