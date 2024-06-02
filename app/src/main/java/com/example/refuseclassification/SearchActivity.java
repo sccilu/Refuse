@@ -27,16 +27,19 @@ import org.litepal.LitePal;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * SearchActivity 类用于实现搜索功能。
+ */
 public class SearchActivity extends AppCompatActivity {
 
-    private static final String TAG = "SearchActivity";
+    private static final String TAG = "SearchActivity"; // 日志标签
 
-    private Toolbar toolbar;
-    private EditText editText;
-    private RecyclerView recyclerView;
-    private TextView emptyView;
-    private List<Knowledge> knowledges = new ArrayList<>();
-    private MyAdapter myAdapter;
+    private Toolbar toolbar; // 工具栏
+    private EditText editText; // 搜索输入框
+    private RecyclerView recyclerView; // RecyclerView 用于显示搜索结果
+    private TextView emptyView; // 空视图，当搜索结果为空时显示
+    private List<Knowledge> knowledges = new ArrayList<>(); // 知识列表
+    private MyAdapter myAdapter; // RecyclerView 的适配器
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +51,7 @@ public class SearchActivity extends AppCompatActivity {
         toolbar.setTitle("搜索");
         setSupportActionBar(toolbar);
 
-        // 初始化数据列表
+        // 从数据库中获取所有的知识数据
         knowledges = LitePal.findAll(Knowledge.class);
 
         recyclerView = findViewById(R.id.search_recyclerView);
@@ -57,13 +60,13 @@ public class SearchActivity extends AppCompatActivity {
         recyclerView.setAdapter(myAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // 实例化EditText
+        // 初始化 EditText
         editText = findViewById(R.id.search);
         Intent intent = getIntent();
         String record = intent.getStringExtra("record");
         if (record != null) {
             editText.setText(record);
-            filterKnowledgeList(record);
+            filterKnowledgeList(record); // 过滤知识列表
         }
 
         // 添加文本变化监听器
@@ -75,7 +78,7 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                filterKnowledgeList(s.toString());
+                filterKnowledgeList(s.toString()); // 根据输入过滤知识列表
             }
 
             @Override
@@ -85,7 +88,10 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
-    // 过滤知识列表并在后台线程中执行
+    /**
+     * 过滤知识列表并在后台线程中执行
+     * @param query 用户输入的查询字符串
+     */
     private void filterKnowledgeList(String query) {
         new FilterTask(new AsyncTaskListener<List<Knowledge>>() {
             @Override
@@ -94,12 +100,14 @@ public class SearchActivity extends AppCompatActivity {
                 knowledges.clear();
                 knowledges.addAll(result);
                 myAdapter.notifyDataSetChanged();
-                updateEmptyView();
+                updateEmptyView(); // 更新空视图
             }
         }).execute(query);
     }
 
-    // 更新空视图
+    /**
+     * 更新空视图，当没有搜索结果时显示空视图
+     */
     private void updateEmptyView() {
         if (knowledges.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
@@ -110,7 +118,9 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
-    // AsyncTask用于在后台执行过滤操作
+    /**
+     * AsyncTask 用于在后台执行过滤操作
+     */
     private static class FilterTask extends AsyncTask<String, Void, List<Knowledge>> {
 
         private AsyncTaskListener<List<Knowledge>> listener;
@@ -139,11 +149,13 @@ public class SearchActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<Knowledge> result) {
-            listener.onTaskComplete(result);
+            listener.onTaskComplete(result); // 调用监听器方法传递结果
         }
     }
 
-    // 自定义RecyclerView适配器
+    /**
+     * 自定义 RecyclerView 适配器，用于显示知识列表
+     */
     private static class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
         private List<Knowledge> knowledgeList;
@@ -172,7 +184,9 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
-    // 自定义ViewHolder
+    /**
+     * 自定义 ViewHolder，用于 RecyclerView
+     */
     private static class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView name;
@@ -185,7 +199,10 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
-    // 定义一个接口来处理异步任务的结果
+    /**
+     * 定义一个接口来处理异步任务的结果
+     * @param <T> 异步任务的结果类型
+     */
     public interface AsyncTaskListener<T> {
         void onTaskComplete(T result);
     }

@@ -23,6 +23,9 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
+/**
+ * SpeechRecognitionActivity 类是一个用于语音识别的活动。
+ */
 public class SpeechRecognitionActivity extends AppCompatActivity implements EventListener {
 
     private static final int PERMISSION_REQUEST_CODE = 123; // 权限请求码
@@ -35,9 +38,11 @@ public class SpeechRecognitionActivity extends AppCompatActivity implements Even
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speech_recognition);
 
-        initPermission(); // 初始化权限
+        // 初始化权限
+        initPermission();
 
-        asr = EventManagerFactory.create(this, "asr"); // 创建语音识别事件管理器
+        // 创建语音识别事件管理器
+        asr = EventManagerFactory.create(this, "asr");
         asr.registerListener(this); // 注册事件监听器
 
         dialogEtInput = findViewById(R.id.dialog_et_input); // 绑定输入文本框
@@ -68,7 +73,7 @@ public class SpeechRecognitionActivity extends AppCompatActivity implements Even
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 将识别结果传递到SearchActivity
+                // 将识别结果传递到 SearchActivity
                 String resultText = dialogEtInput.getText().toString();
                 Intent intent = new Intent(SpeechRecognitionActivity.this, SearchActivity.class);
                 intent.putExtra("record", resultText);
@@ -77,7 +82,9 @@ public class SpeechRecognitionActivity extends AppCompatActivity implements Even
         });
     }
 
-    // 初始化权限
+    /**
+     * 初始化权限
+     */
     private void initPermission() {
         String[] permissions = {
                 Manifest.permission.RECORD_AUDIO, // 录音权限
@@ -123,12 +130,13 @@ public class SpeechRecognitionActivity extends AppCompatActivity implements Even
                 Log.i("asr.event", params); // 打印日志
 
                 Gson gson = new Gson();
-                ASRResponse asrResponse = gson.fromJson(params, ASRResponse.class); // 解析JSON响应
+                ASRResponse asrResponse = gson.fromJson(params, ASRResponse.class); // 解析 JSON 响应
 
                 if (asrResponse != null) {
                     String result = asrResponse.getBestResult();
                     if (result != null) {
-                        result = result.replace('，', ' ').replace('。', ' ').trim(); // 替换中文逗号、句号并去除多余空格
+                        // 替换中文逗号、句号并去除多余空格
+                        result = result.replace('，', ' ').replace('。', ' ').trim();
                         dialogEtInput.setText(result); // 将结果显示在文本框中
                     }
                 }
@@ -143,14 +151,18 @@ public class SpeechRecognitionActivity extends AppCompatActivity implements Even
         asr.unregisterListener(this); // 注销事件监听器
     }
 
-    // 语音识别响应类
+    /**
+     * ASRResponse 类用于解析语音识别的 JSON 响应数据。
+     */
     class ASRResponse {
         private String best_result;
 
+        // 获取最佳识别结果
         public String getBestResult() {
             return best_result;
         }
 
+        // 设置最佳识别结果
         public void setBestResult(String best_result) {
             this.best_result = best_result;
         }
