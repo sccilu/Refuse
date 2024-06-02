@@ -1,32 +1,34 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--解裔地-->
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/search_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#64E269" />
+        android:background="?attr/colorPrimary"
+        android:theme="?attr/actionBarTheme" />
 
     <EditText
         android:id="@+id/search"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:hint=" 🔍 请输入搜索内容"
-        android:paddingLeft="20dp"
-        android:background="@drawable/searchview_circle"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/search_toolbar"
+        android:hint="输入搜索内容" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="20dp"/>
+        android:layout_below="@id/search" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="没有搜索结果"
+        android:visibility="gone" />
+
+</RelativeLayout>

@@ -1,5 +1,4 @@
 package com.example.refuseclassification;
-//解裔地
 
 import android.Manifest;
 import android.content.Intent;
@@ -129,7 +128,7 @@ public class SpeechRecognitionActivity extends AppCompatActivity implements Even
                 if (asrResponse != null) {
                     String result = asrResponse.getBestResult();
                     if (result != null) {
-                        result = result.replace('，', ' ').trim(); // 替换中文逗号并去除多余空格
+                        result = result.replace('，', ' ').replace('。', ' ').trim(); // 替换中文逗号、句号并去除多余空格
                         dialogEtInput.setText(result); // 将结果显示在文本框中
                     }
                 }

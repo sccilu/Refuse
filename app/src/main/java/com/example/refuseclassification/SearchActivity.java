@@ -1,5 +1,5 @@
 package com.example.refuseclassification;
-//解裔地
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -7,10 +7,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,17 +20,21 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.refuseclassification.Database.Knowledge;
+import com.example.refuseclassification.R;
 
 import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchActivity extends BaseActivity {
+public class SearchActivity extends AppCompatActivity {
+
+    private static final String TAG = "SearchActivity";
 
     private Toolbar toolbar;
     private EditText editText;
     private RecyclerView recyclerView;
+    private TextView emptyView;
     private List<Knowledge> knowledges = new ArrayList<>();
     private MyAdapter myAdapter;
 
@@ -40,12 +46,13 @@ public class SearchActivity extends BaseActivity {
         // 初始化工具栏
         toolbar = findViewById(R.id.search_toolbar);
         toolbar.setTitle("搜索");
-        new setTitleCenter().setTitleCenter(toolbar);
+        setSupportActionBar(toolbar);
 
         // 初始化数据列表
         knowledges = LitePal.findAll(Knowledge.class);
 
         recyclerView = findViewById(R.id.search_recyclerView);
+        emptyView = findViewById(R.id.empty_view);
         myAdapter = new MyAdapter(knowledges);
         recyclerView.setAdapter(myAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -61,19 +68,16 @@ public class SearchActivity extends BaseActivity {
 
         // 添加文本变化监听器
         editText.addTextChangedListener(new TextWatcher() {
-            // 输入文本前的状态
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // 不需要进行任何操作
             }
 
-            // 输入文本时的状态
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 filterKnowledgeList(s.toString());
             }
 
-            // 输入文本之后的状态
             @Override
             public void afterTextChanged(Editable s) {
                 // 不需要进行任何操作
@@ -81,19 +85,66 @@ public class SearchActivity extends BaseActivity {
         });
     }
 
-    // 过滤知识列表
+    // 过滤知识列表并在后台线程中执行
     private void filterKnowledgeList(String query) {
-        knowledges.clear();
-        if (!TextUtils.isEmpty(query)) {
-            knowledges.addAll(LitePal.where("name like ?", "%" + query + "%").find(Knowledge.class));
+        new FilterTask(new AsyncTaskListener<List<Knowledge>>() {
+            @Override
+            public void onTaskComplete(List<Knowledge> result) {
+                // 更新 UI
+                knowledges.clear();
+                knowledges.addAll(result);
+                myAdapter.notifyDataSetChanged();
+                updateEmptyView();
+            }
+        }).execute(query);
+    }
+
+    // 更新空视图
+    private void updateEmptyView() {
+        if (knowledges.isEmpty()) {
+            recyclerView.setVisibility(View.GONE);
+            emptyView.setVisibility(View.VISIBLE);
         } else {
-            knowledges.addAll(LitePal.findAll(Knowledge.class));
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
         }
-        myAdapter.notifyDataSetChanged();
+    }
+
+    // AsyncTask用于在后台执行过滤操作
+    private static class FilterTask extends AsyncTask<String, Void, List<Knowledge>> {
+
+        private AsyncTaskListener<List<Knowledge>> listener;
+
+        FilterTask(AsyncTaskListener<List<Knowledge>> listener) {
+            this.listener = listener;
+        }
+
+        @Override
+        protected List<Knowledge> doInBackground(String... queries) {
+            String query = queries[0];
+            if (!TextUtils.isEmpty(query)) {
+                try {
+                    // 修改查询条件，确保参数正确传递
+                    return LitePal.where("name LIKE ? OR kind LIKE ?",
+                                    "%" + query + "%", "%" + query + "%")
+                            .find(Knowledge.class);
+                } catch (Exception e) {
+                    Log.e(TAG, "查询出错：" + e.getMessage(), e);
+                    return new ArrayList<>();
+                }
+            } else {
+                return LitePal.findAll(Knowledge.class);
+            }
+        }
+
+        @Override
+        protected void onPostExecute(List<Knowledge> result) {
+            listener.onTaskComplete(result);
+        }
     }
 
     // 自定义RecyclerView适配器
-    private class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
+    private static class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
         private List<Knowledge> knowledgeList;
 
@@ -101,7 +152,6 @@ public class SearchActivity extends BaseActivity {
             this.knowledgeList = knowledgeList;
         }
 
-        // 创建ViewHolder
         @NonNull
         @Override
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -109,7 +159,6 @@ public class SearchActivity extends BaseActivity {
             return new MyViewHolder(view);
         }
 
-        // 绑定ViewHolder
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             Knowledge knowledge = knowledgeList.get(position);
@@ -117,7 +166,6 @@ public class SearchActivity extends BaseActivity {
             holder.kind.setText(knowledge.getKind());
         }
 
-        // 获取列表项数量
         @Override
         public int getItemCount() {
             return knowledgeList.size();
@@ -135,5 +183,10 @@ public class SearchActivity extends BaseActivity {
             name = itemView.findViewById(R.id.name);
             kind = itemView.findViewById(R.id.kind);
         }
+    }
+
+    // 定义一个接口来处理异步任务的结果
+    public interface AsyncTaskListener<T> {
+        void onTaskComplete(T result);
     }
 }
